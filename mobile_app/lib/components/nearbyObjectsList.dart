@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mw_insider/components/loadingCircle.dart';
+import 'package:mw_insider/components/nothingAroundBanner.dart';
 import 'package:mw_insider/components/objectCard.dart';
 import 'package:mw_insider/config.dart';
 import 'package:mw_insider/services/backendCommunicationService.dart';
@@ -21,9 +22,13 @@ class NearbyObjectsList extends StatefulWidget {
 
 class _NearbyObjectsListState extends State<NearbyObjectsList> {
   List<dynamic> nearbyObjects = [];
+  bool nothingAround = false;
   var locationData;
 
   Future<void> loadData() async{
+    if (nothingAround)
+        return;
+
     if (!mounted || !isUseful(locationData)) {
       return; // Just do nothing if the widget is disposed.
     }
@@ -34,7 +39,12 @@ class _NearbyObjectsListState extends State<NearbyObjectsList> {
     Map response = await serverRequest('post', 'geo_objects/get_nearby_objects', requestData);
     if (mounted) {
       setState(() {
-        nearbyObjects = response['objects'];
+        if (response['objects'].length > 0) {
+          nearbyObjects = response['objects'];
+        }
+        else{
+          nothingAround = true;
+        }
       });
     }
   }
@@ -77,7 +87,7 @@ class _NearbyObjectsListState extends State<NearbyObjectsList> {
                 onGoToObject: widget.onGoToObject,
               );
             }
-            else{
+            else if (!nothingAround){
               loadData();
               return Container(
                 child: Column(
@@ -88,6 +98,9 @@ class _NearbyObjectsListState extends State<NearbyObjectsList> {
                   ],
                 ),
               );
+            }
+            else{
+              return NothingAroundBanner();
             }
           },
         ),
