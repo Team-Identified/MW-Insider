@@ -179,180 +179,203 @@ class _ObjectPageState extends State<ObjectPage> {
         ),
       );
 
+      String explorationStatus = "Не исследовано";
+      Widget explorationIcon = Icon(MdiIcons.closeOutline, color: Colors.red, size: 30.0);
+      if (objectData['explored']){
+        explorationStatus = "Исследован";
+        explorationIcon = Icon(MdiIcons.checkOutline, color: Colors.green, size: 30.0);
+      }
+
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           backgroundColor: Colors.white,
-          body: Container(
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: screenWidth,
-                      height: screenHeight * 0.4,
-                      color: Colors.grey,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Image.network(
-                          objectData['image_url'],
-                          errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
-                            return Image.asset('assets/images/AnimeGirls.jpg');
-                          },
-                          loadingBuilder: (context, child, progress){
-                            return progress == null
-                                ? child
-                                : Container(
-                              color: Colors.grey[300],
-                              padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 0.0),
-                              child: Center(
-                                child: LoadingCircle(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 10.0,
-                      top: 8.0,
-                      child: ObjMenu(objectId: widget.objectId),
-                    ),
-                    Positioned(
-                      top: 3.0,
-                      left: 10.0,
-                      child: Container(
-                        child: ElevatedButton(
-                          child: Icon(Icons.arrow_left, color: Colors.white, size: 27.0,),
-                          onPressed: widget.onGoBack,
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.black.withOpacity(0.3),
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          body: SingleChildScrollView(
+            child: Container(
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        width: screenWidth,
+                        height: screenHeight * 0.4,
+                        color: Colors.grey,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Image.network(
+                            objectData['image_url'],
+                            errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
+                              return Image.asset('assets/images/AnimeGirls.jpg');
+                            },
+                            loadingBuilder: (context, child, progress){
+                              return progress == null
+                                  ? child
+                                  : Container(
+                                color: Colors.grey[300],
+                                padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 0.0),
+                                child: Center(
+                                  child: LoadingCircle(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0.0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                      Positioned(
+                        right: 10.0,
+                        top: 8.0,
+                        child: ObjMenu(objectId: widget.objectId),
+                      ),
+                      Positioned(
+                        top: 3.0,
+                        left: 10.0,
                         child: Container(
-                          width: screenWidth,
-                          color: themeColor,
-                          child: Row(
-                            children: [
-                              SizedBox(width: 20.0),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 10.0),
-                                    Container(
-                                      width: screenWidth - 40.0,
-                                      child: Text(
-                                        objectData['name_ru'],
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 23.0,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: screenWidth - 40.0,
-                                      child: Text(
-                                        objectData['name_en'],
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 19.0,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.0),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          getIcon(objectData['category']),
-                                          color: Colors.white,
-                                        ),
-                                        Container(
-                                          width: screenWidth * 0.6,
-                                          child: Text(
-                                            capitalize(getRussianCategory(objectData['category'])),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 16.0,
-                                            ),
+                          child: ElevatedButton(
+                            child: Icon(Icons.arrow_left, color: Colors.white, size: 27.0,),
+                            onPressed: widget.onGoBack,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.black.withOpacity(0.3),
+                              elevation: 5,
+                              shadowColor: Colors.black,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                          child: Container(
+                            width: screenWidth,
+                            color: themeColor,
+                            child: Row(
+                              children: [
+                                SizedBox(width: 20.0),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 10.0),
+                                      Container(
+                                        width: screenWidth - 40.0,
+                                        child: Text(
+                                          objectData['name_ru'],
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 23.0,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10.0),
-                                  ],
+                                      ),
+                                      Container(
+                                        width: screenWidth - 40.0,
+                                        child: Text(
+                                          objectData['name_en'],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 19.0,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.0),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            getIcon(objectData['category']),
+                                            color: Colors.white,
+                                          ),
+                                          Container(
+                                            width: screenWidth * 0.6,
+                                            child: Text(
+                                              capitalize(getRussianCategory(objectData['category'])),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 16.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10.0),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5.0),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: dataButtons,
+                    ],
                   ),
-                ),
-                Divider(),
-                Row(
-                  children: [
-                    SizedBox(width: 10.0),
-                    Icon(
-                      Icons.location_on,
-                      size: 30.0,
-                      color: Colors.blueGrey,
+                  SizedBox(height: 5.0),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: dataButtons,
                     ),
-                    Container(
-                      width: screenWidth - 60.0,
-                      child: Text(
-                        capitalize(objectData['address']),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 16.0,
+                  ),
+                  Divider(),
+                  Container(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        explorationIcon,
+                        Text(
+                          explorationStatus,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(width: 10.0),
+                      Icon(
+                        Icons.location_on,
+                        size: 30.0,
+                        color: Colors.blueGrey,
+                      ),
+                      Container(
+                        width: screenWidth - 60.0,
+                        child: Text(
+                          capitalize(objectData['address']),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 16.0,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: 10.0),
-                    Icon(
-                      Icons.directions_walk_outlined,
-                      size: 30.0,
-                      color: Colors.blueGrey,
-                    ),
-                    Container(
-                      width: screenWidth - 60.0,
-                      child: Text(
-                        "${distance}m",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 18.0,
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(width: 10.0),
+                      Icon(
+                        Icons.directions_walk_outlined,
+                        size: 30.0,
+                        color: Colors.blueGrey,
+                      ),
+                      Container(
+                        width: screenWidth - 60.0,
+                        child: Text(
+                          "${distance}m",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                getTagsWindow(screenWidth),
-                Flexible(
-                  child: Container(
+                    ],
+                  ),
+                  getTagsWindow(screenWidth),
+                  Container(
+                    height: screenHeight * 0.3,
                     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -392,8 +415,8 @@ class _ObjectPageState extends State<ObjectPage> {
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

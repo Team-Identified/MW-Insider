@@ -32,7 +32,13 @@ class GeoObjectRetrieveViewSet(viewsets.ViewSet):
         queryset = GeoObject.objects.all()
         geo_object = get_object_or_404(queryset, pk=pk)
         serializer = GeoObjectSerializer(geo_object, context={'request': request})
-        return Response(serializer.data)
+        already_explored = False
+        if request.user.is_authenticated:
+            already_explored = \
+                UserObjectExploration.objects.filter(user=request.user, geo_object=geo_object).count() > 0
+        response_data = serializer.data
+        response_data['explored'] = already_explored
+        return Response(response_data)
 
 
 class SubmittedGeoObjectViewSet(viewsets.ViewSet):
