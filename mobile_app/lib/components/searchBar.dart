@@ -49,13 +49,19 @@ class _SearchBarState extends State<SearchBar> {
           onSubmitted: widget.onSubmit,
           decoration: InputDecoration(
             isDense: true,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: themeColor, width: 1.5),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0),
+              ),
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(20.0),
               ),
             ),
             hintText: "Поиск объектов",
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: Icon(Icons.search, color: themeColorShade),
             suffixIcon: _searchText.isEmpty
                 ? null
                 : InkWell(
@@ -64,7 +70,7 @@ class _SearchBarState extends State<SearchBar> {
                   _searchController.clear();
                 });
               },
-              child: Icon(Icons.clear),
+              child: Icon(Icons.clear, color: themeColorShade),
             ),
           ),
         ),
