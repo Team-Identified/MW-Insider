@@ -1,6 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:mw_insider/components/userExplorationsList.dart';
 import 'package:mw_insider/services/uiService.dart';
 import 'package:mw_insider/components/loadingCircle.dart';
 import 'package:mw_insider/components/middleButton.dart';
@@ -283,7 +283,10 @@ class _ProfileState extends State<ProfilePage> {
           onSubmitted: addTag,
           decoration: InputDecoration(
             hintText: "Добавить тег",
-            prefixIcon: Icon(Icons.add),
+            prefixIcon: Icon(Icons.add, color: themeColorShade),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: themeColor, width: 1.5),
+            ),
           ),
         ),
       ),
@@ -302,7 +305,10 @@ class _ProfileState extends State<ProfilePage> {
           onSubmitted: removeTag,
           decoration: InputDecoration(
             hintText: "Удалить тег",
-            prefixIcon: Icon(Icons.remove),
+            prefixIcon: Icon(Icons.remove, color: themeColorShade),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: themeColor, width: 1.5),
+            ),
           ),
         ),
       ),
@@ -327,15 +333,23 @@ class _ProfileState extends State<ProfilePage> {
     if (loaded){
       return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              getHeader(screenWidth),
-              getTagsWindow(screenWidth),
-              getDateJoinedCard(),
-              getLogOutButton(),
-            ],
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                SizedBox(height: 20),
+                getHeader(screenWidth),
+                SizedBox(height: 10),
+                getTagsWindow(screenWidth),
+                SizedBox(height: 10),
+                getDateJoinedCard(),
+                SizedBox(height: 10),
+                UserExplorationsList(),
+                SizedBox(height: 30.0),
+                getLogOutButton(),
+              ],
+            ),
           ),
         ),
       );

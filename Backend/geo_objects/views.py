@@ -8,7 +8,7 @@ from config import GEO_OBJECTS_SEARCH_SIMILARITY, GEO_OBJECTS_SEARCH_MAX_RESULTS
     NEARBY_OBJECTS_EXPLORATION_RADIUS
 from geo_objects.models import GeoObject, SubmittedGeoObject, UserObjectExploration
 from geo_objects.serializers import GeoObjectSerializer, SubmittedGeoObjectSerializer, SearchRequestSerializer, \
-    LocationRequestSerializer, UserObjectExplorationSerializer
+    LocationRequestSerializer
 from geo_objects.tools import get_nearby_objects
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
 from rest_framework.views import APIView
@@ -210,9 +210,13 @@ class MyExplorationsView(APIView):
     def get(request):
         objects = UserObjectExploration.objects.filter(user=request.user).order_by('created')
         objects = objects.reverse()
-        serializer = UserObjectExplorationSerializer(objects, many=True)
+        geo_objects = []
+        for explored_object in objects:
+            geo_objects.append(explored_object.geo_object)
+        serializer = GeoObjectSerializer(geo_objects, context={'request': request}, many=True)
         data = serializer.data
-        return Response(data=data, status=status.HTTP_200_OK)
+        response_data = {'objects': data}
+        return Response(data=response_data, status=status.HTTP_200_OK)
 
 
 class GetLastExploredObject(APIView):
